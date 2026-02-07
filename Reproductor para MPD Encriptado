@@ -23,17 +23,11 @@
       font-family: 'Segoe UI', sans-serif;
     }
 
-    /* ===============================
-       CONTROLBAR NATIVA ABAJO
-       =============================== */
     .jw-controlbar {
       background-color: rgba(20, 20, 20, 0.85) !important;
       border-top: 1px solid #333;
     }
 
-    /* ===============================
-       BOTONES VISUALMENTE ARRIBA
-       =============================== */
     .jw-controlbar .jw-button-container {
       position: absolute !important;
       top: -46px;
@@ -50,7 +44,6 @@
       z-index: 10;
     }
 
-    /* Espacio para que no tape el video */
     .jwplayer video {
       margin-top: 46px;
     }
@@ -152,21 +145,13 @@ function iniciarReproductor() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   const isSmartTV = /SmartTV|Tizen|Web0S|SmartHub|Chromecast/i.test(navigator.userAgent);
 
+  /* ✅ SIN BOOST — solo volumen normal */
   if (!isSmartTV) {
     player.on("play", function () {
       const video = document.querySelector("#player video");
-      if (video && !video.audioBoostApplied) {
-        try {
-          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          const source = audioCtx.createMediaElementSource(video);
-          const gain = audioCtx.createGain();
-          gain.gain.value = 5;
-          source.connect(gain);
-          gain.connect(audioCtx.destination);
-          video.muted = false;
-          video.volume = 1.0;
-          video.audioBoostApplied = true;
-        } catch(e) { console.warn("Audio boost no disponible:", e); }
+      if (video) {
+        video.muted = false;
+        video.volume = 1.0;
       }
     });
   }
